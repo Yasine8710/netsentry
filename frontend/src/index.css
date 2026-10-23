@@ -20,3 +20,13 @@
     }
   }
 }
+
+[data-density='compact'] td,
+[data-density='compact'] th {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+[data-reduced-motion='true'] * {
+  animation: none !important;
+  transition: none !important;
+}
