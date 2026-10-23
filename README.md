@@ -89,7 +89,7 @@ Optional configuration: copy `.env.example` to `backend/.env` (variables are pre
 docker compose up --build   # UI on http://localhost:8080 (bound to 127.0.0.1)
 ```
 
-> The Docker files were written but not built or run in the development environment (Docker was not installed there). Treat them as unverified until you run them.
+> Verified on Docker Desktop 29.9 (Windows, WSL2): both images build, the stack starts, and upload, analysis and alerts work through the nginx proxy. The backend runs as a non-root user.
 
 ## Example workflow
 
@@ -137,7 +137,6 @@ Size limits enforced before buffering, magic-byte validation, generated temp fil
 - The Overview's unique-IP figures are the sum of per-capture uniques (an IP seen in two captures counts twice).
 - No schema migrations yet (schema-version guard only).
 - Detection quality has not been benchmarked against labeled datasets; no accuracy figures are claimed.
-- Docker setup unverified (see above).
 
 ## Roadmap
 
