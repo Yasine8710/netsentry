@@ -43,6 +43,7 @@ class DnsSourceStats:
     qname_cap_hit: bool = False
     longest_label: int = 0
     total_qname_len: int = 0
+    servers: set = field(default_factory=set)  # resolvers queried (capped)
 
 
 class TrafficAggregator:
@@ -115,6 +116,8 @@ class TrafficAggregator:
         self.dns_queries += 1
         s = self._dns_source(p.src)
         s.queries += 1
+        if len(s.servers) < 10:
+            s.servers.add(p.dst)
         if p.ts is not None:
             s.first_ts = p.ts if s.first_ts is None else min(s.first_ts, p.ts)
             s.last_ts = p.ts if s.last_ts is None else max(s.last_ts, p.ts)

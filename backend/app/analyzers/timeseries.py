@@ -44,3 +44,10 @@ class TimeSeries:
             return []
         lo, hi = min(self._b), max(self._b)
         return [self._b.get(i, [0, 0])[0] for i in range(lo, hi + 1)]
+
+    def dense(self) -> list[tuple[float, int, int]]:
+        """(bucket start, packets, bytes) for every bucket between first and last, gaps zero-filled."""
+        if not self._b:
+            return []
+        lo, hi = min(self._b), max(self._b)
+        return [(i * self.bucket_s, *self._b.get(i, (0, 0))) for i in range(lo, hi + 1)]
