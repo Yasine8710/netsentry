@@ -14,6 +14,7 @@ from app.models.tables import (
     PacketRecord,
     TrafficStat,
 )
+from app.reports.report_service import ReportService
 from app.schemas.api import (
     AlertDetailOut,
     AlertOut,
@@ -391,3 +392,39 @@ def overview(s: SessionDep, include_demo: bool = True):
         ],
         "recent_analyses": [_list_item(a, s).model_dump(mode="json") for a in recent],
     }
+
+
+# ---- reports -----------------------------------------------------------------
+def _download(content: str, media: str, a: Analysis, ext: str) -> Response:
+    return Response(
+        content,
+        media_type=media,
+        headers={
+            "Content-Disposition": f'attachment; filename="netsentry-{a.id}.{ext}"',
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
+
+
+@router.get("/analyses/{analysis_id}/reports/json", tags=["reports"])
+def report_json(analysis_id: str, s: SessionDep):
+    """Analysis summary, detections and limitations as JSON."""
+    a = _analysis_or_404(s, analysis_id)
+    return _download(ReportService(s).to_json(a), "application/json", a, "json")
+
+
+@router.get("/analyses/{analysis_id}/reports/csv", tags=["reports"])
+def report_csv(analysis_id: str, s: SessionDep):
+    """Alert records as CSV (formula-injection safe)."""
+    a = _analysis_or_404(s, analysis_id)
+    return _download(ReportService(s).to_csv(a), "text/csv; charset=utf-8", a, "csv")
+
+
+@router.get("/analyses/{analysis_id}/reports/html", tags=["reports"])
+def report_html(analysis_id: str, s: SessionDep):
+    """Self-contained human-readable report (all values HTML-escaped, no scripts)."""
+    a = _analysis_or_404(s, analysis_id)
+    html = ReportService(s).to_html(a)
+    resp = _download(html, "text/html; charset=utf-8", a, "html")
+    resp.headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'"
+    return resp
