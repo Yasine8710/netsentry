@@ -10,3 +10,4 @@ dist/
 coverage/
 backend/var/
 *.log
+*.egg-info/
