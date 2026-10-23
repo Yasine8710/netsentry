@@ -55,7 +55,7 @@ export default function Traffic() {
         )}
         {list.data && list.data.items.length > 0 && (
           <>
-            <div className="overflow-x-auto">
+            <div className="relative overflow-x-auto">
               <table className="w-full min-w-[640px]" aria-label="Analysis sessions">
                 <thead>
                   <tr>

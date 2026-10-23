@@ -52,6 +52,14 @@ Delivery: Docker, Docker Compose, GitHub Actions.
 
 ## Quick start (Windows, PowerShell)
 
+One command (builds the UI if needed, serves UI and API on one port):
+
+```powershell
+.\scripts\start.ps1   # then open http://127.0.0.1:8000
+```
+
+Development mode with hot reload (two terminals):
+
 Prerequisites: Python 3.12+, Node.js 20+ (developed on 22), Git.
 
 ```powershell
@@ -100,7 +108,7 @@ cd backend;  .venv\Scripts\Activate.ps1; pytest -q; ruff check .; ruff format --
 cd frontend; npm test; npm run lint; npm run format; npm run build
 ```
 
-Last local run: backend 142 tests passed, frontend 24 tests passed; ruff, ESLint, Prettier, `tsc` and the production build were clean. CI (`.github/workflows/ci.yml`) runs the same checks.
+Last local run: backend 145 tests passed, frontend 24 tests passed; ruff, ESLint, Prettier, `tsc` and the production build were clean. CI (`.github/workflows/ci.yml`) runs the same checks.
 
 ## Detection rules (summary)
 
@@ -142,4 +150,4 @@ Size limits enforced before buffering, magic-byte validation, generated temp fil
 
 ## License
 
-No license has been chosen yet; until one is added, all rights are reserved by the author.
+MIT. See [LICENSE](LICENSE).

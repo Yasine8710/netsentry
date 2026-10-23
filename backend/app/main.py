@@ -1,8 +1,10 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.api.routes import router
@@ -52,7 +54,31 @@ def create_app() -> FastAPI:
     def health() -> dict[str, str]:
         return {"status": "ok", "version": app.version}
 
+    _mount_frontend(app)
     return app
+
+
+def _frontend_dir() -> Path | None:
+    configured = get_settings().frontend_dir
+    path = configured or Path(__file__).resolve().parents[2] / "frontend" / "dist"
+    return path if (path / "index.html").is_file() else None
+
+
+def _mount_frontend(app: FastAPI) -> None:
+    """Serve the built UI (single-port mode). Skipped when no build exists."""
+    root = _frontend_dir()
+    if root is None:
+        return
+    root = root.resolve()
+
+    @app.get("/{path:path}", include_in_schema=False)
+    def spa(path: str) -> FileResponse:
+        if path.startswith("api/"):
+            raise HTTPException(404, "Not found.")
+        target = (root / path).resolve()
+        if path and target.is_file() and root in target.parents:
+            return FileResponse(target)
+        return FileResponse(root / "index.html")
 
 
 app = create_app()

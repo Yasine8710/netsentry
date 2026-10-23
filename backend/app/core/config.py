@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     max_packets: int = 500_000
     analysis_timeout_s: int = 120
     retention_hours: int = 720  # analysis records; temp uploads are removed immediately
+    frontend_dir: Path | None = None  # built UI to serve; defaults to ../frontend/dist
     cors_origins: str = "http://localhost:5173"
 
     @property
