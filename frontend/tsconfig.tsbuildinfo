@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./tests/app.test.tsx","./tests/setup.ts","./vite.config.ts"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/layout.tsx","./src/components/charts.tsx","./src/components/ui.tsx","./src/features/traffic/packettable.tsx","./src/features/traffic/uploadpanel.tsx","./src/hooks/useasync.ts","./src/pages/overview.tsx","./src/pages/traffic.tsx","./src/pages/trafficdetail.tsx","./src/services/api.ts","./src/types/api.ts","./src/utils/format.ts","./tests/setup.ts","./vite.config.ts"],"version":"5.9.3"}

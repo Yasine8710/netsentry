@@ -11,3 +11,5 @@ coverage/
 backend/var/
 *.log
 *.egg-info/
+backend-dev.log
+frontend-dev.log

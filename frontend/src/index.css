@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-ink-950 text-slate-200 antialiased;
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-ink-950 font-sans text-slate-200 antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
