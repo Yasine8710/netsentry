@@ -181,4 +181,3 @@ class TrafficAggregator:
             },
             "time_series": {"bucket_s": self.series.bucket_s, "points": self.series.points()},
         }
-
