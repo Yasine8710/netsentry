@@ -30,6 +30,7 @@ class Analysis(Base):
     file_format: Mapped[str | None] = mapped_column(String(16))
     file_size: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[str] = mapped_column(String(16), default="queued", index=True)
+    is_demo: Mapped[bool] = mapped_column(default=False)
     error: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
     completed_at: Mapped[datetime | None]

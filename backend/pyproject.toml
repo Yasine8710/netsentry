@@ -35,3 +35,4 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101", "S311"]
+"app/analyzers/synthetic.py" = ["S311"]

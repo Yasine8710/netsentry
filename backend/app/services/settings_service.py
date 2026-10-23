@@ -26,7 +26,7 @@ class AppSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
     max_upload_mb: int = Field(50, ge=1, le=500)
     max_packets: int = Field(500_000, ge=1_000, le=5_000_000)
-    retention_hours: int = Field(24, ge=1, le=24 * 365)
+    retention_hours: int = Field(720, ge=1, le=24 * 365)
     store_packet_rows: int = Field(50_000, ge=0, le=500_000)
     detection: dict[str, RuleConfig] = Field(default_factory=dict)
     ui: UiPrefs = Field(default_factory=UiPrefs)

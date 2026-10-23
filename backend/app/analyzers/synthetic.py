@@ -1,5 +1,6 @@
 """Deterministic synthetic capture generator (tests and sample data). Local files only."""
 
+import random
 from pathlib import Path
 
 from scapy.layers.dns import DNS, DNSQR
@@ -75,3 +76,24 @@ def normal_traffic(start=1000.0, n=60):
 def write_pcap(path: Path, packets) -> Path:
     wrpcap(str(path), list(packets))
     return path
+
+
+def demo_capture(start: float = 1_700_000_000.0):
+    """Labelled demo traffic: normal browsing, a port scan, a SYN burst, odd DNS, a traffic spike."""
+    pk = normal_traffic(start, n=120)
+    pk += port_scan("203.0.113.66", "10.0.0.10", range(1, 61), start + 20, 0.02)
+    for i in range(240):
+        pk.append(
+            tcp(f"198.51.100.{i % 200 + 1}", "10.0.0.10", 20000 + i, 80, "S", start + 30 + i * 0.02)
+        )
+    rnd = random.Random(42)
+    alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
+    for i in range(60):
+        label = "".join(rnd.choice(alphabet) for _ in range(36))
+        pk.append(
+            dns_query("10.0.0.77", "10.0.0.1", f"{label}.cdn-sync.example", start + 10 + i * 1.5)
+        )
+    for i in range(900):
+        pk.append(udp("10.0.0.20", "10.0.0.30", 5000, 6000, start + 45 + i / 900, 800))
+    pk.sort(key=lambda p: float(p.time))
+    return pk
