@@ -91,6 +91,14 @@ class AnalysisContext:
     flows: list[Flow]
     flows_truncated: bool = False
     notes: list[str] = field(default_factory=list)
+    _reverse: bool | None = field(default=None, repr=False)
+
+    @property
+    def has_reverse_traffic(self) -> bool:
+        """False for one-directional captures, where "no response" cannot be inferred."""
+        if self._reverse is None:
+            self._reverse = any(f.pkts_s > 0 for f in self.flows)
+        return self._reverse
 
 
 class DetectionRule(ABC):
