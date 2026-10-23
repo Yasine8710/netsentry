@@ -1,0 +1,21 @@
+# Local use only. Ports are bound to 127.0.0.1; there is no authentication.
+# Do not expose this stack to untrusted networks (see docs/security.md).
+services:
+  backend:
+    build: ./backend
+    environment:
+      NETSENTRY_CORS_ORIGINS: http://localhost:8080
+      NETSENTRY_MAX_UPLOAD_MB: "50"
+    volumes:
+      - netsentry-data:/data
+    restart: unless-stopped
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  netsentry-data:
